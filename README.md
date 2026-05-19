@@ -29,16 +29,6 @@ FilmMood is a web application that recommends movies based on the user's mood us
 - JWT Authentication
 - TMDB API
 
-## Screenshots
-
-### Home Page
-![Home](screenshots/home.png)
-
-### Mood Selection
-![Mood](screenshots/mood.png)
-
-### Movie Recommendations
-![Movies](screenshots/movies.png)
 
 ## Installation
 
