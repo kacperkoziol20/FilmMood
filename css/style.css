@@ -1,0 +1,482 @@
+/* =========================================
+   1. ZMIENNE I SETUP
+   ========================================= */
+:root {
+  --bg-deep: #0a0a0a;
+  --bg-card: #1e1e1e; 
+  --accent: #e50914;
+  --accent-glow: rgba(229, 9, 20, 0.5);
+  --text-main: #eee;
+  --text-muted: #b3b3b3;
+  --radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --font-main: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Animowane tło */
+  background: radial-gradient(circle at 10% 10%, rgba(255,70,70,0.02), transparent 12%),
+              linear-gradient(120deg, #0f0f10 0%, #1a0f0f 45%, #0f1214 100%);
+  background-attachment: fixed;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* =========================================
+   2. NAWIGACJA 
+   ========================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.navbar h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e8e8e8;
+}
+
+.navbar ul { display: flex; gap: 20px; align-items: center; }
+
+.navbar a {
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: opacity .2s ease;
+  cursor: pointer;
+}
+.navbar a:hover { opacity: 0.7; color: white; }
+
+#login-btn, #logout-btn {
+  background-color: var(--accent);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+#login-btn:hover { background-color: #f40612; }
+
+/* =========================================
+   3. HERO I SEARCH
+   ========================================= */
+.hero { text-align: center; padding: 4rem 1rem 2rem; }
+.hero h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; text-shadow: 0 2px 18px rgba(0,0,0,0.6); }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+#search {
+  padding: 0.85rem 1.25rem;
+  width: min(560px, 100%);
+  border-radius: 40px;
+  font-size: 1rem;
+  border: 1px solid rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.01);
+  color: var(--text-main);
+  outline: none;
+  transition: all .18s ease;
+}
+#search:focus {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.045);
+  border-color: rgba(229,9,20,0.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* =========================================
+   4. MOODS
+   ========================================= */
+.moods {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.moods button {
+  background-color: var(--accent);
+  border: none;
+  padding: 1rem 1.5rem;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.moods button:hover {
+  transform: scale(1.1);
+  background-color: #ff3b3b;
+}
+
+.favorites-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+.favorites-btn:hover { background: var(--accent); color: white; }
+
+/* =========================================
+   5. KARTY FILMÓW 
+   ========================================= */
+.movies-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem 5%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* --- Naprawa plakatów*/
+.movie-card {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  padding: 1rem; /* Padding robi ramkę - brak czarnych pasków */
+  cursor: pointer;
+  transition: transform .28s, box-shadow .28s;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+  display: block; 
+  border: none;
+}
+
+.movie-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+  z-index: 2;
+}
+
+/* Plakat wewnątrz karty */
+.poster-wrap {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  background: transparent; 
+}
+
+.poster-wrap img {
+  width: 100%;
+  height: auto; 
+  display: block;
+  transition: transform 0.4s ease;
+  border-radius: 8px;
+}
+
+.movie-card h3 {
+  margin: 0.5rem 0 0.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0;
+  white-space: normal;
+}
+
+.movie-card .meta {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+
+/* Serduszko na plakacie */
+.fav-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 8px;
+  padding: 6px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+}
+.fav-btn:hover { background: rgba(255,255,255,0.2); }
+.fav-btn.favorited { color: gold; }
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* =========================================
+   6. MODAL FILMU 
+   ========================================= */
+.movie-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85));
+  z-index: 3000;
+  padding: 2rem;
+}
+.movie-modal.show { display: flex; }
+
+.movie-modal-content {
+  background: var(--bg-card);
+  color: #eee;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 1000px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  position: relative;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.movie-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.movie-modal-body {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.8rem;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.movie-poster-wrap {
+  min-width: 260px;
+  max-width: 360px;
+  flex: 0 0 320px;
+}
+.movie-poster-wrap img { width: 100%; border-radius: 10px; }
+
+.movie-info { flex: 1; text-align: left; }
+.movie-info h2 { font-size: 2.2rem; margin-top: 0; margin-bottom: 1rem; }
+.movie-info p { color: #dcdcdc; line-height: 1.5; max-height: 240px; overflow: auto; margin-bottom: 1.5rem; }
+.movie-meta { display: flex; gap: 1.5rem; margin-bottom: 1rem; color: #cfcfcf; }
+
+/* =========================================
+   7. MODAL LOGOWANIA 
+   ========================================= */
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+.auth-modal.show { display: flex; }
+
+.auth-box {
+  background: #181818;
+  padding: 3rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  border: 1px solid #333;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 1rem;
+  background: #333;
+  border: none;
+  color: white;
+  border-radius: 4px;
+}
+.auth-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.auth-btn.small { padding: 0.8rem 1.5rem; font-size: 1rem; margin-top: 0; }
+
+.auth-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* =========================================
+   8. RESPONSYWNOŚĆ 
+   ========================================= */
+@media (max-width: 768px) {
+  .navbar { flex-direction: column; gap: 15px; padding: 1rem; }
+  .navbar ul { flex-wrap: wrap; justify-content: center; }
+  .movies-container { grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1rem; }
+  .movie-modal-body { flex-direction: column; align-items: center; text-align: center; }
+  .movie-poster-wrap { max-width: 250px; flex: 0 0 auto; }
+  .movie-info { text-align: center; }
+  #search { width: 100%; }
+}
+
+
+
+/* --- STYL DLA ZWIASTUNÓW --- */
+.trailer-container {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  display: none; /* Ukryte, dopóki nie klikniesz */
+  background: black;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.trailer-container iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Proporcje YouTube */
+  border: none;
+  display: block;
+}
+
+/* Szary przycisk zwiastuna */
+#trailer-btn:hover {
+  background: #555 !important;
+  transform: translateY(-2px);
+}
+
+
+
+
+/* =========================================
+   POPRAWKA: WYRÓWNANIE PRZYCISKÓW W MODALU
+   ========================================= */
+.movie-actions {
+  display: flex;
+  align-items: center; /* Kluczowe: centruje przyciski pionowo względem siebie */
+  gap: 15px;           /* Odstęp między przyciskami */
+  flex-wrap: wrap;     /* Na wąskich ekranach przyciski spadną pod siebie */
+  margin-top: 1rem;    /* Mały odstęp od opisu filmu */
+}
+
+/* Upewniamy się, że te konkretne przyciski nie próbują być na 100% szerokości */
+.movie-actions .auth-btn {
+  width: auto;
+  display: inline-flex; /* Lepsze centrowanie ikony wewnątrz przycisku */
+  align-items: center;
+  justify-content: center;
+}
+.navbar button {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.navbar button:hover {
+  color: #ff4d4d;
+}
+.profile-btn {
+  background: transparent;
+  border: none;
+  color: #ddd;
+  font-size: 0.9em;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.profile-btn:hover {
+  text-decoration: underline;
+}
+
+/* --- NAPRAWA MODALA PROFILU --- */
+#profile-modal {
+  /* Pozycja i rozmiar na cały ekran */
+  position: fixed !important;
+  inset: 0 !important; /* To samo co top:0; left:0; right:0; bottom:0; */
+  width: 100vw !important;
+  height: 100vh !important;
+  
+  /* Wygląd tła */
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(5px);
+  
+  /* Pozycjonowanie okienka na środku */
+  align-items: center;
+  justify-content: center;
+  
+  /* Warstwa - musi być NAJWYŻEJ */
+  z-index: 2147483647 !important; 
+  
+  /* Animacja pojawiania się */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  
+ 
+  display: none; 
+}
+
+/* Klasa dodawana przez Twój nowy JS */
+#profile-modal.show {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+
+#profile-modal .auth-box {
+  background: #1e1e1e;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #333;
+  box-shadow: 0 0 50px rgba(229, 9, 20, 0.2);
+  min-width: 300px;
+  max-width: 400px;
+  color: white;
+  position: relative;
+  z-index: 2147483648 !important; 
+}

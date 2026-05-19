@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FilmMood 🎬</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div id="auth-modal" class="auth-modal" aria-hidden="true" style="display:none;">
+    <div class="auth-box" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button type="button" id="auth-close" class="auth-close" aria-label="Zamknij">&times;</button>
+      <h2 id="auth-title">Zaloguj się</h2>
+
+      <form id="auth-form">
+        <label class="auth-label" for="auth-email" style="display:none">Email</label>
+        <input type="email" id="auth-email" placeholder="twój@email.pl" autocomplete="off" required />
+
+        <label class="auth-label" for="auth-password" style="display:none">Hasło</label>
+        <input type="password" id="auth-password" placeholder="Hasło (min. 6 znaków)" autocomplete="new-password" required />
+
+        <label class="auth-label" for="auth-name" style="display:none">Nazwa</label>
+        <input type="text" id="auth-name" placeholder="Twoja nazwa (tylko przy rejestracji)" autocomplete="off" style="display:none;" />
+
+        <button type="submit" id="auth-submit" class="auth-btn">Zaloguj</button>
+      </form>
+
+      <p class="auth-switch">
+        Nie masz konta? <a id="switch-to-register" href="#">Zarejestruj się</a>
+      </p>
+    </div>
+  </div>
+
+  <header>
+    <nav class="navbar">
+      <h1>🎬 FilmMood</h1>
+      <ul>
+        <li><button id="home-btn">Strona główna</button></li>
+        <li><button id="login-btn">Logowanie</button></li>
+        <li><button id="logout-btn" style="display:none;">Wyloguj</button></li>
+      </ul>
+      <button id="profile-btn" class="profile-btn" style="display:none;">👤 Profil</button>
+    </nav>
+  </header>
+
+  <section id="welcome" class="hero">
+    <h2>Wybierz nastrój, aby zobaczyć filmy 🎬</h2>
+  </section>
+
+  <main>
+    <section class="moods">
+      <button data-mood="happy">😊 Wesoły</button>
+      <button data-mood="sad">😢 Smutny</button>
+      <button data-mood="angry">😡 Zły</button>
+      <button data-mood="tired">😴 Zmęczony</button>
+      <button data-mood="nostalgic">🥺 Nostalgiczny</button>
+    </section>
+    
+    <div class="controls">
+        <button id="favorites-btn" class="favorites-btn">❤️ Ulubione</button>
+        <input type="text" id="search" placeholder="Szukaj filmu po tytule..." />
+    </div>
+
+    <section class="movies-container" id="movies-container">
+      </section>
+  </main>
+
+  <footer>
+    <p>© 2025 FilmMood — Dobierz film do nastroju</p>
+  </footer>
+
+  <div id="movie-detail-modal" class="movie-modal" aria-hidden="true" style="display:none;">
+    <div class="movie-modal-content" role="dialog" aria-modal="true" aria-labelledby="movie-modal-title">
+      <button type="button" id="movie-modal-close" class="movie-modal-close" aria-label="Zamknij">×</button>
+
+      <div class="movie-modal-body">
+        <div class="movie-poster-wrap">
+          <img id="movie-modal-poster" src="" alt="poster">
+        </div>
+
+        <div class="movie-info">
+          <div class="movie-actions">
+            <button id="movie-modal-fav" class="auth-btn small">Dodaj do ulubionych</button>
+            <button id="trailer-btn" class="auth-btn small" style="background: #333; margin-left: 10px;">🎬 Zwiastun</button>
+          </div>
+
+          <div id="trailer-container" class="trailer-container"></div>
+
+          <h2 id="movie-modal-title"></h2>
+          
+          <div class="movie-meta">
+            <div><strong>Ocena:</strong> <span id="movie-modal-rating">–</span></div>
+            <div><strong>Data:</strong> <span id="movie-modal-date">–</span></div>
+          </div>
+
+          <p id="movie-modal-overview"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="profile-modal" class="auth-modal" style="display:none; z-index: 20000;">
+      <div class="auth-box">
+        <button id="profile-close" class="auth-close">&times;</button>
+    
+        <h2>Twój profil</h2>
+    
+        <p><strong>ID Użytkownika:</strong> <span id="profile-id" style="color:#888;"></span></p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <p><strong>Ulubione filmy:</strong> ❤️ <span id="profile-fav-count">0</span></p>
+    
+        <label style="margin-top:15px; display:block;">Twoja nazwa wyświetlana</label>
+        <input type="text" id="profile-name" placeholder="Wpisz nazwę..." />
+    
+        <button id="profile-save" class="auth-btn">Zapisz zmiany</button>
+      </div>
+  </div>
+
+  <script src="js/main.js"></script>
+
+</body>
+</html>
